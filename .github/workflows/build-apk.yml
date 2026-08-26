@@ -69,11 +69,11 @@ jobs:
           echo "Keystore created: $(ls -lh andew_ai.keystore)"
       
       - name: Make gradlew executable
-        run: chmod +x ./gradlew || true
+        run: # gradle is pre-installed on runner
       
       - name: Build Debug APK
         run: |
-          ./gradlew assembleDebug --no-daemon
+          gradle assembleDebug --no-daemon
       
       - name: Sign Debug APK
         if: env.KEYSTORE_PASSWORD != ''
@@ -159,7 +159,7 @@ jobs:
       
       - name: Build Debug APK with Model
         run: |
-          ./gradlew assembleDebug --no-daemon
+          gradle assembleDebug --no-daemon
       
       - name: Sign APK with Model
         if: env.KEYSTORE_PASSWORD != ''
