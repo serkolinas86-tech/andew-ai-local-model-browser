@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material Design 3 Color Scheme - Premium/Fancy Theme -->
+    <color name="colorPrimary">#6750A4</color>        <!-- Primary purple -->
+    <color name="colorPrimaryVariant">#4F378B</color>  <!-- Primary variant -->
+    <color name="colorOnPrimary">#FFFFFF</color>       <!-- On primary -->
+    <color name="colorSecondary">#006C4C</color>       <!-- Secondary teal -->
+    <color name="colorSecondaryVariant">#00533C</color><!-- Secondary variant -->
+    <color name="colorOnSecondary">#FFFFFF</color>     <!-- On secondary -->
+    <color name="colorError">#BA1A1A</color>           <!-- Error -->
+    <color name="colorOnError">#FFFFFF</color>         <!-- On error -->
+    <color name="colorBackground">#FFFBFE</color>      <!-- Background -->
+    <color name="colorOnBackground">#1C1B1F</color>    <!-- On background -->
+    <color name="colorSurface">#FFFBFE</color>         <!-- Surface -->
+    <color name="colorOnSurface">#1C1B1F</color>       <!-- On surface -->
+    <color name="colorSurfaceVariant">#E7E0EC</color>  <!-- Surface variant -->
+    <color name="colorOnSurfaceVariant">#49454F</color><!-- On surface variant -->
+    <color name="colorOutline">#79747E</color>         <!-- Outline -->
+    <color name="colorOutlineVariant">#CAC4D0</color>  <!-- Outline variant -->
+    <color name="colorInverseSurface">#313033</color>  <!-- Inverse surface -->
+    <color name="colorInverseOnSurface">#F4EFF4</color><!-- Inverse on surface -->
+    <color name="colorPrimaryContainer">#EADDFF</color> <!-- Primary container -->
+    <color name="colorOnPrimaryContainer">#21005D</color><!-- On primary container -->
+    <color name="colorSecondaryContainer">#A7F0D0</color><!-- Secondary container -->
+    <color name="colorOnSecondaryContainer">#002115</color><!-- On secondary container -->
+    <color name="colorTertiary">#7D5260</color>        <!-- Tertiary -->
+    <color name="colorOnTertiary">#FFFFFF</color>      <!-- On tertiary -->
+    <color name="colorTertiaryContainer">#FFD8E4</color><!-- Tertiary container -->
+    <color name="colorOnTertiaryContainer">#31111D</color><!-- On tertiary container -->
+</resources>
