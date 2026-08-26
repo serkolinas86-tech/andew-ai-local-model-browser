@@ -13,10 +13,7 @@
         <!-- Error color -->
         <item name="colorError">@color/colorError</item>
         <item name="colorOnError">@color/colorOnError</item>
-        <!-- Background color -->
-        <item name="colorBackground">@color/colorBackground</item>
-        <item name="colorOnBackground">@color/colorOnBackground</item>
-        <!-- Surface color -->
+        <!-- Surface colors (Material 3 uses Surface instead of Background) -->
         <item name="colorSurface">@color/colorSurface</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
         <item name="colorSurfaceVariant">@color/colorSurfaceVariant</item>
@@ -33,15 +30,15 @@
         <item name="colorOnTertiary">@color/colorOnTertiary</item>
         <item name="colorTertiaryContainer">@color/colorTertiaryContainer</item>
         <item name="colorOnTertiaryContainer">@color/colorOnTertiaryContainer</item>
-        <!-- Status bar color -->
+        <!-- Status bar -->
         <item name="android:statusBarColor">@color/colorPrimaryVariant</item>
-        <item name="android:navigationBarColor">@color/colorBackground</item>
+        <item name="android:navigationBarColor">@color/colorSurface</item>
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowLightNavigationBar">true</item>
         <!-- Typography -->
-        <item name="android:textColorPrimary">@color/colorOnBackground</item>
+        <item name="android:textColorPrimary">@color/colorOnSurface</item>
         <item name="android:textColorSecondary">@color/colorOnSurfaceVariant</item>
-        <!-- Shape appearance - use Material3 base styles -->
+        <!-- Shape appearance -->
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent</item>
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
@@ -63,7 +60,7 @@
         <item name="cornerSize">28dp</item>
     </style>
 
-    <!-- Button styles using Material3 base -->
+    <!-- Button styles -->
     <style name="Widget.AndewAI.Button" parent="Widget.Material3.Button">
         <item name="cornerRadius">12dp</item>
         <item name="android:textSize">14sp</item>
@@ -94,7 +91,7 @@
     <!-- Text styles -->
     <style name="TextAppearance.AndewAI.HeadlineLarge" parent="TextAppearance.Material3.HeadlineLarge">
         <item name="fontFamily">sans-serif-medium</item>
-        <item name="android:textColor">@color/colorOnBackground</item>
+        <item name="android:textColor">@color/colorOnSurface</item>
     </style>
 
     <style name="TextAppearance.AndewAI.TitleLarge" parent="TextAppearance.Material3.TitleLarge">
