@@ -41,10 +41,10 @@
         <!-- Typography -->
         <item name="android:textColorPrimary">@color/colorOnBackground</item>
         <item name="android:textColorSecondary">@color/colorOnSurfaceVariant</item>
-        <!-- Shape appearance -->
-        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.AndewAI.SmallComponent</item>
-        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.AndewAI.MediumComponent</item>
-        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.AndewAI.LargeComponent</item>
+        <!-- Shape appearance - use Material3 base styles -->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent"
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent"
     </style>
 
     <!-- Custom Shape Appearance for rounded corners -->
@@ -63,7 +63,7 @@
         <item name="cornerSize">28dp</item>
     </style>
 
-    <!-- Button styles -->
+    <!-- Button styles using Material3 base -->
     <style name="Widget.AndewAI.Button" parent="Widget.Material3.Button">
         <item name="cornerRadius">12dp</item>
         <item name="android:textSize">14sp</item>
@@ -78,7 +78,7 @@
         <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
-    <style name="Widget.AndewAI.Button.Filled" parent="Widget.Material3.Button.FilledButton">
+    <style name="Widget.AndewAI.Button.Filled" parent="Widget.Material3.Button">
         <item name="cornerRadius">12dp</item>
         <item name="backgroundTint">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorOnPrimary</item>
