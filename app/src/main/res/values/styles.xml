@@ -43,8 +43,8 @@
         <item name="android:textColorSecondary">@color/colorOnSurfaceVariant</item>
         <!-- Shape appearance - use Material3 base styles -->
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
-        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent"
-        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent"
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
     </style>
 
     <!-- Custom Shape Appearance for rounded corners -->
