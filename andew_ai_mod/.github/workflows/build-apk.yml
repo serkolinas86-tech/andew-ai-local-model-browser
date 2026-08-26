@@ -1,0 +1,187 @@
+name: Build & Sign Andew AI Local APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      model_url:
+        description: 'URL to download GGUF model (optional)'
+        required: false
+        type: string
+      model_name:
+        description: 'Model filename (e.g., mllm-7b-q4_k_m.gguf)'
+        required: false
+        default: 'model.gguf'
+        type: string
+
+env:
+  # Keystore config - SET THESE IN GITHUB SECRETS!
+  KEYSTORE_ALIAS: andew_ai
+  KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+  KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
+jobs:
+  build-and-sign:
+    name: Build & Sign APK
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 35
+          ndk-version: r26c
+          cmake-version: 3.22.1
+      
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      
+      - name: Download GGUF Model (if URL provided)
+        if: github.event.inputs.model_url != ''
+        run: |
+          echo "Downloading model from ${{ github.event.inputs.model_url }}"
+          mkdir -p app/src/main/assets
+          curl -L -o "app/src/main/assets/${{ github.event.inputs.model_name }}" "${{ github.event.inputs.model_url }}"
+          echo "Model downloaded: $(ls -lh app/src/main/assets/${{ github.event.inputs.model_name }})"
+      
+      - name: Create keystore from base64 secret
+        if: env.KEYSTORE_PASSWORD != ''
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > andew_ai.keystore
+          echo "Keystore created: $(ls -lh andew_ai.keystore)"
+      
+      - name: Make gradlew executable
+        run: chmod +x ./gradlew || true
+      
+      - name: Build Debug APK
+        run: |
+          ./gradlew assembleDebug --no-daemon
+      
+      - name: Sign Debug APK
+        if: env.KEYSTORE_PASSWORD != ''
+        run: |
+          APK_PATH=$(find . -name "app-debug.apk" | head -1)
+          echo "Found APK: $APK_PATH"
+          
+          # Sign the APK
+          apksigner sign \
+            --ks andew_ai.keystore \
+            --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
+            --key-pass pass:${{ secrets.KEY_PASSWORD }} \
+            --ks-key-alias ${{ env.KEYSTORE_ALIAS }} \
+            --out app-debug-signed.apk \
+            "$APK_PATH"
+          
+          # Verify signature
+          apksigner verify --print-certs app-debug-signed.apk
+          
+          echo "SIGNED_APK=app-debug-signed.apk" >> $GITHUB_ENV
+      
+      - name: Zipalign APK (optional optimization)
+        if: env.KEYSTORE_PASSWORD != ''
+        run: |
+          zipalign -f -p 4 app-debug-signed.apk app-debug-aligned.apk
+          echo "ALIGNED_APK=app-debug-aligned.apk" >> $GITHUB_ENV
+      
+      - name: Upload Signed APK as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: andew-ai-local-signed-apk
+          path: |
+            app-debug-signed.apk
+            app-debug-aligned.apk
+          retention-days: 7
+      
+      - name: Create Release (on tag push)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            app-debug-signed.apk
+            app-debug-aligned.apk
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-with-model:
+    name: Build with Pre-bundled Model
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    if: github.event.inputs.model_url != ''
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          api-level: 35
+          ndk-version: r26c
+          cmake-version: 3.22.1
+      
+      - name: Download GGUF Model
+        run: |
+          echo "Downloading model from ${{ github.event.inputs.model_url }}"
+          mkdir -p app/src/main/assets
+          curl -L -o "app/src/main/assets/${{ github.event.inputs.model_name }}" "${{ github.event.inputs.model_url }}"
+          echo "Model downloaded: $(ls -lh app/src/main/assets/${{ github.event.inputs.model_name }})"
+      
+      - name: Create keystore from base64 secret
+        if: env.KEYSTORE_PASSWORD != ''
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > andew_ai.keystore
+          echo "Keystore created: $(ls -lh andew_ai.keystore)"
+      
+      - name: Build Debug APK with Model
+        run: |
+          ./gradlew assembleDebug --no-daemon
+      
+      - name: Sign APK with Model
+        if: env.KEYSTORE_PASSWORD != ''
+        run: |
+          APK_PATH=$(find . -name "app-debug.apk" | head -1)
+          echo "Found APK: $APK_PATH"
+          
+          apksigner sign \
+            --ks andew_ai.keystore \
+            --ks-pass pass:${{ secrets.KEYSTORE_PASSWORD }} \
+            --key-pass pass:${{ secrets.KEY_PASSWORD }} \
+            --ks-key-alias ${{ env.KEYSTORE_ALIAS }} \
+            --out app-debug-signed-with-model.apk \
+            "$APK_PATH"
+          
+          apksigner verify --print-certs app-debug-signed-with-model.apk
+          
+          echo "SIGNED_APK=app-debug-signed-with-model.apk" >> $GITHUB_ENV
+      
+      - name: Upload Signed APK with Model
+        uses: actions/upload-artifact@v4
+        with:
+          name: andew-ai-local-with-model
+          path: app-debug-signed-with-model.apk
+          retention-days: 7
