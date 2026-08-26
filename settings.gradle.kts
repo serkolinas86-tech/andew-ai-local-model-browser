@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Andew AI Local"
-include ':app'
+include(":app")
