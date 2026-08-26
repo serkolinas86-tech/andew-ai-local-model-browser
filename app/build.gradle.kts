@@ -46,7 +46,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.6.0"
+        // Let compose-bom manage the kotlin compiler extension version
     }
 
     packaging {
